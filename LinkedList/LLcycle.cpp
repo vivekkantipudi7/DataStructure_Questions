@@ -15,7 +15,7 @@ public:
         ListNode *fast = head;
         if (head == NULL || head->next == NULL)
             return false;
-        while (fast != NULL && fast->next != NULL)
+        while (fast != NULL && fast->next != NULL)   // TC : O(N)
         {
             slow = slow->next;
             fast = fast->next->next;
