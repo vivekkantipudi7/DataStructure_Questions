@@ -1,0 +1,46 @@
+ // Function to return Breadth First Traversal of given graph.
+    void Bfs(unordered_map<int, vector<int>>& mp, int u, vector<bool>& visited, vector<int>& result)
+    {
+        queue<int>q;
+                                                                      // 0 vertex ni queue lo push chestham and visited array lo 0 index ni true chestham
+        q.push(u);                                                      
+        visited[u] = true;                                        
+        result.push_back(u);       
+                                      
+        while(!q.empty())                                              // ippudu q lo unna elements empty ayyentha varuku loop run chestham 
+        {                                           
+            int front = q.front();                                     // 0 vertex ni pop chesi dhaniki adj matrix lo connect ayina elements ni traverse chestham
+            q.pop();
+            
+            for(auto &v : mp[front])                                   
+            {
+                if(!visited[v])                                        // okavela emaina element manaki visit avvakapothe we will push that ele into queue and
+                {
+                    q.push(v);                                         // visited of that ele true chestham
+                    visited[v] = true;
+                    result.push_back(v);
+                }
+            }
+        }
+        
+    }
+    vector<int> bfsOfGraph(vector<vector<int>> &adj) {
+        // Code here
+        int V = adj.size();
+        vector<bool>visited(V, false);
+        
+        vector<int>result;
+        
+        unordered_map<int, vector<int>>mp;       
+        
+        for(int u=0;u<V;u++)
+        {
+            for(auto it= adj[u].begin(); it!= adj[u].end(); it++)
+            {                                                               // ikkada manam adjacent matrix thayyar chesam
+                mp[u].push_back(*it);
+            }
+        }
+        
+        Bfs(mp, 0, visited, result);                                     // 0 vertex ki bfs call chesthunnaam
+        
+        return result;
