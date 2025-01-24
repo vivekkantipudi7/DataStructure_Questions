@@ -1,0 +1,45 @@
+ // Function to detect cycle in an undirected graph.
+    bool isCycleBfs(vector<vector<int>>& adj, int u, vector<bool>&visited, int parent)
+    {
+        queue<pair<int, int>>q;              // first 0 vertix ni and dhani parent (-1) ni queue loki push chestham
+        visited[u] = true;
+        q.push({u, -1});
+        
+        while(!q.empty())                 
+        {
+            pair<int, int>p = q.front();    // ippudu queue lo manaki pairs untai and fornt pair ni theesukuntam and source, parent assign chestham
+            
+            int source = p.first;
+            int parent = p.second;
+            
+            q.pop();
+            
+            for(auto &v : adj[source])     //ah source element ki connect aina elements ni traverse chestham 
+            {
+                if(visited[v] == false)    // okavela avi visit avvakapothe visited[v] = true chestham and push chestham queue loki and okavela already visit aipothe 
+                {                          // skip chesestham
+                   visited[v]=true;
+                   q.push({v, source});
+                }
+                else if(v!=parent)        // okavela visit ayyi and dhani parent ki equal kakapothe return true chestham
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    bool isCycle(vector<vector<int>>& adj) {
+        // Code here
+        int V = adj.size();
+        vector<bool>visited(V, false);
+        
+        for(int i=0; i<V; i++)
+        {
+            if(!visited[i] && isCycleBfs(adj, i, visited, -1))
+            {
+                return true;
+            }
+        }
+        return false;
+}
