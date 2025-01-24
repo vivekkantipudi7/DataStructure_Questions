@@ -1,0 +1,45 @@
+ void Dfs(vector<vector<int>>& adj, int u, vector<bool>& visited, vector<int>& result)
+    {   
+        if(visited[u]==true)return;
+        
+        visited[u] = true;
+        result.push_back(u);
+        
+        for(auto &v : adj[u])
+        {
+            if(!visited[v])
+            {
+                Dfs(adj, v, visited, result);
+            }
+        }
+    }
+    vector<vector<int>> connectedcomponents(int v, vector<vector<int>>& edges) {
+        // code here
+        vector<bool>visited(v, false);
+        
+        
+         vector<vector<int>> adj(v);  // 2d vector of V vertices
+
+        for (auto &it : edges)
+        {
+            int v = it[1];
+            int u = it[0];
+
+            adj[u].push_back(v);
+            adj[v].push_back(u);   // only if graph is undirected
+        }
+        
+        vector<vector<int>>ans;
+        
+        for(int i=0;i<v;i++)
+        {
+            if(!visited[i])
+            {   
+                vector<int>result;
+                Dfs(adj, i, visited, result);
+                sort(result.begin(), result.end());
+                ans.push_back(result);
+            }
+        }
+        return ans;
+    }
