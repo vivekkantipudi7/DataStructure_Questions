@@ -1,0 +1,41 @@
+ // Function to return a list containing the DFS traversal of the graph.
+
+
+    void Dfs(unordered_map<int, vector<int>>& mp, int u,  vector<bool>& visited, vector<int>&result)
+    {
+        if(visited[u]==true)
+        return;
+        
+        visited[u]=true;
+        result.push_back(u);
+        
+        for(auto &v : mp[u])
+        {
+            if(!visited[v])
+            {
+                Dfs(mp, v, visited, result);
+            }
+        }
+    }
+
+
+    vector<int> dfsOfGraph(vector<vector<int>>& adj) {
+        // Code here
+        int V= adj.size();
+        vector<bool> visited(V, false);
+        unordered_map<int, vector<int>> mp;
+        
+        for(int u=0; u<adj.size(); u++)
+        {
+            for(auto v=adj[u].begin(); v<adj[u].end(); v++)
+            {
+                mp[u].push_back(*v);
+            }
+        }
+        
+        vector<int>result;
+        
+        Dfs(mp, 0, visited, result);
+        
+        return result;
+    }
