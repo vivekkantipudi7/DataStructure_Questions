@@ -1,0 +1,36 @@
+ // Function to detect cycle in an undirected graph.
+
+ // 0------1 (idhi oka undirected graph anuko), ippudu manam 0 ki (-1) ane parent ni assign chestham and 1 ki ikkada parent (0) avvudhi
+ // ippudu 0 to 1 and 1 to 0 kuda connect ayyi unnay so manam cycle ani cheppachu kani adhi cycle kaadhu ga so, 0 nundi 1 ki vellinappudu okavela (1) eh parent
+ // ga unte manam continue chesestham. Ikkada chudu 1 to 0 velthunnappudu 1 ki 0 anedhi parent so manam atuside dfs call cheyyam
+
+
+    bool isCycleDfs(vector<vector<int>>& adj, int u, vector<bool>&visited, int parent)
+    {
+        visited[u] = true;                                     // first manam unna element ni true chestham
+
+                                                               // v       u
+        for(auto &v : adj[u])                                  // 0-------1  parent of 1 = 0, so ikkada v == parent ante  0==0 
+        {
+            if(v == parent)continue;                           // manam parents ni assign chesukuntam prathi element ki, so manam ah parents vaipuki vellam            
+            
+            if(visited[v] == true)return true;                  // okavela mundhe visit ayyi unte we will return true or malli function true return chesina true.
+            
+            if(isCycleDfs(adj, v, visited, u))return true;
+        }
+        return false;
+    }
+    bool isCycle(vector<vector<int>>& adj) {
+        // Code here
+        int V = adj.size();
+        vector<bool>visited(V, false);
+        
+        for(int i=0; i<V; i++)
+        {
+            if(!visited[i] && isCycleDfs(adj, i, visited, -1))       // okavela ah element visit avvakunda cylce function true return chesthe cycle unnatte
+            {
+                return true;
+            }
+        }
+        return false;
+    }
