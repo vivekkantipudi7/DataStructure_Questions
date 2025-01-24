@@ -23,8 +23,8 @@
         for (auto &it : edges)
         {
             int v = it[1];
-            int u = it[0];
-
+            int u = it[0];                                                        // Take away - adjacent matrix ivvaledhani gamaninchaali and sarigga adjacent matrix
+                                                                                  // ni cheyyaali
             adj[u].push_back(v);
             adj[v].push_back(u);   // only if graph is undirected
         }
