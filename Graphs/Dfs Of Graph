@@ -3,15 +3,15 @@
 
     void Dfs(unordered_map<int, vector<int>>& mp, int u,  vector<bool>& visited, vector<int>&result)
     {
-        if(visited[u]==true)
-        return;
+        if(visited[u]==true)                               // okavela already 0 vertex true aithe return avvudhi lekapothe 
+        return;                                               0th vertex ni true chesi dhani adjacent elements vaipu velthadhi
         
         visited[u]=true;
         result.push_back(u);
         
         for(auto &v : mp[u])
         {
-            if(!visited[v])
+            if(!visited[v])                              // okavela dhani adjacent elements visited kakunda inka false gaane unnayo vaatike Dfs vestham malli
             {
                 Dfs(mp, v, visited, result);
             }
@@ -22,20 +22,20 @@
     vector<int> dfsOfGraph(vector<vector<int>>& adj) {
         // Code here
         int V= adj.size();
-        vector<bool> visited(V, false);
+        vector<bool> visited(V, false);                           //visit ayina elements ni true ga marustham
         unordered_map<int, vector<int>> mp;
         
         for(int u=0; u<adj.size(); u++)
         {
-            for(auto v=adj[u].begin(); v<adj[u].end(); v++)
+            for(auto v=adj[u].begin(); v<adj[u].end(); v++)         //idhi adjacent matrix create cheyyadaniki 
             {
-                mp[u].push_back(*v);
+                  mp[u].push_back(*v);                              //mamuluga aithe akkarle kaani manaki alavatu avvadaniki rasindi
             }
         }
         
         vector<int>result;
         
-        Dfs(mp, 0, visited, result);
+        Dfs(mp, 0, visited, result);                               //0th vertix ki velthunnaam
         
         return result;
     }
