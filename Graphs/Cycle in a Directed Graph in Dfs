@@ -1,0 +1,40 @@
+// Function to detect cycle in a directed graph.
+
+// Graph : 0-->1<--2 ee graph chusukunte manaki 0 to 1 lo first 1 ki true pettestham visited array lo, ippudu 2 to 1 vellinappudu 1 already true ani untundi
+// So dhani meaning cyclic kaadhu, so manam inRecursion ane inko boolean vector theesukuntam
+// inRecursion lo oke dfs calls lo vachina elements ki true assign chestham and ah dfs calls aipothe false pettestham malli
+
+
+bool isCycleDfs(vector<vector<int>>& adj, int u, vector<bool>& visited, vector<bool>& inRecursion)
+    {
+        visited[u] = true;
+        inRecursion[u]= true;
+        
+        for(auto &v : adj[u])
+        {
+            if(!visited[v] && isCycleDfs(adj, v, visited, inRecursion))
+            {
+               return true;
+            }
+            else if(inRecursion[v] == true)              // oka dfs call lo okavela visited[v] true avthe and inRecursion kuda true unte cycle unnattu
+            {
+               return true; 
+            }
+        }
+        inRecursion[u] = false;                         // oka set of Dfs calls aipothe vaatini malli false chesestham
+        return false;
+    }
+    bool isCyclic(int V, vector<vector<int>> adj) {
+        // code here
+        vector<bool>visited(V, false);
+        vector<bool>inRecursion(V, false);                               
+        
+        for(int i = 0; i<V; i++)
+        {
+            if(!visited[i] && isCycleDfs(adj, i, visited, inRecursion))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
