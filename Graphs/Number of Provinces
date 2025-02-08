@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int n;
+    void Dfs(vector<vector<int>>& isConnected ,int u, vector<bool>& visited)
+    {
+        visited[u] = true;
+
+        for(int v=0; v<n; v++)                  // ikkada isConnected ane grid lo oko row theesukuni dhani columns lo traverse chesthu if connected ah ledha ani check cheyyadaniki ee loop
+        {
+            if(!visited[v] && isConnected[u][v]==1)  
+            {
+                Dfs(isConnected, v, visited);     // malli dfs vesam
+            } 
+        }
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+         n = isConnected.size();
+
+        vector<bool>visited(n, false);
+        int count = 0;
+        for(int i=0; i<n; i++)                   // 0 to n-1 cities ni traverse chesi avi visit avvakapothe dfs chesthunnaam
+        {
+            if(!visited[i])
+            {
+                Dfs(isConnected, i, visited);    // connected cities ki dfs aipoyaka return ochinappudu count++ avvudhi
+                count++;
+            }
+        }
+        return count;
+    }
+};
