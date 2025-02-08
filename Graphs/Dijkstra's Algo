@@ -1,0 +1,35 @@
+ // Function to find the shortest distance of all the vertices
+    // from the source vertex src.
+
+    vector<int> dijkstra(vector<vector<pair<int, int>>> &adj, int source) {
+        // Code here
+        int V = adj.size();
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        
+        vector<int>result(V, 1e8);        // ee result array lo source node nundi respective index okka nodes ki patte minimum dist store chestham
+        
+        result[source] = 0;               // starting source node to source node 0 distance kadha!!
+        pq.push({0, source});             // prioirty queue loki push chestham {0, source} ni
+        
+        while(!pq.empty())
+        {
+            int d = pq.top().first;       // ikkada basic ga source node nundi present node ki distance store ayyi untadhi 
+            int node = pq.top().second;   // present node idhi
+            
+            pq.pop();
+            
+            for(auto &vec : adj[node])    // node yokka neighbours
+            {   
+                int adjNode = vec.first ;        // neighbour node of present node
+                int wt = vec.second;             // ee two nodes madhya distance 
+                
+                if(d+wt < result[adjNode])       // ikkada d+wt ante source node nundi ee neighbour node varuku dist dhani mundhu distance kanna shortest ayithey 
+                {
+                    result[adjNode] = d+wt;      // we will update annamaata
+                    pq.push({d+wt, adjNode});    // ah shortest ni malli pq loki push chesi dhani nundi malli inka shortest possibility chustham
+                }
+            }
+        }
+        return result;
+    }
+};
