@@ -1,5 +1,6 @@
  // Function to find the shortest distance of all the vertices
     // from the source vertex src.
+     // using priority queue
 
     vector<int> dijkstra(vector<vector<pair<int, int>>> &adj, int source) {
         // Code here
@@ -27,6 +28,49 @@
                 {
                     result[adjNode] = d+wt;      // we will update annamaata
                     pq.push({d+wt, adjNode});    // ah shortest ni malli pq loki push chesi dhani nundi malli inka shortest possibility chustham
+                }
+            }
+        }
+        return result;
+    }
+};
+
+----------------------------------------------------------------------***-------------------------------------------------------------------------------------------
+
+// using set
+
+vector<int> dijkstra(vector<vector<pair<int, int>>> &adj, int src) {
+        // Code here
+        int V = adj.size();
+        set<pair<int, int>>st;
+        vector<int>result(V, 1e8);
+        
+        result[src] = 0;
+        st.insert({0, src});
+        
+        while(!st.empty())
+        {
+            auto &it = *st.begin();
+            
+            int node = it.second;
+            int d = it.first;
+            
+            st.erase(it);
+            
+            for(auto &vec : adj[node])
+            {   
+                int adjNode = vec.first;
+                int wt = vec.second; 
+                
+                if(d+wt < result[adjNode])
+                {
+                    if(result[adjNode] != INT_MIN)
+                    {
+                        st.erase({result[adjNode], adjNode}); // ikkada okavela edhoka node ki unnadhanikanna shortest dist possible avthe manam push chestham ga pq loki
+                    }                                         // ippudu push chesaka we cant pop out the older one from pq using priority queue but kaani manam set lo erase cheyyachu
+                    
+                    result[adjNode]  = d+wt;
+                    st.insert({d+wt, adjNode});
                 }
             }
         }
