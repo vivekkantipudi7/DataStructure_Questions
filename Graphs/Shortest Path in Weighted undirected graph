@@ -1,0 +1,65 @@
+ vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        // Code here
+        unordered_map<int, vector<pair<int,int>>> mp;
+        
+        for(auto &it : edges)
+        {
+            int u = it[0];
+            int v = it[1];
+            int w = it[2];                 // adjacency matrix thayyaaru chesam ikkada but weight of the edge kuda undhi
+            
+            mp[u].push_back({v, w}); 
+            mp[v].push_back({u, w});
+        }
+        
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        
+        vector<int>result(n+1, INT_MAX); 
+        vector<int>parent(n+1);
+        for(int i=1; i<=n; i++)
+        {
+            parent[i] = i;                  // ikkada oka node em node nundi osthundi ani cheppadaniki oka parent array create chesam (ante path theliyadam kosam)
+        }                                   // initial ga eh node ki ah node eh pettukunnaam
+        result[1] = 0;                    
+        pq.push({0, 1});
+        
+        while(!pq.empty()) 
+        {
+            int node = pq.top().second;
+            int d = pq.top().first;
+            
+            pq.pop();
+            
+            for(auto &vec : mp[node])
+            {                                       // Dijkstra's Algocode idhi antha
+                int adjNode = vec.first;
+                int w = vec.second;
+                
+                if(w+d < result[adjNode])
+                {
+                    result[adjNode] = w+d;
+                    pq.push({w+d, adjNode});
+                    parent[adjNode] = node;        // manaki node 1 nundi oka particular node ki shortest distance unnappudu parent of that node ni update chestham
+                }
+            }
+        }
+        
+        vector<int>path;
+        int destNode = n;                          // ikkada manaki destination node n kadha ante 1 to n ki velle path ki shortest distance kanipedathunnaam
+        
+        if(result[destNode] == INT_MAX)return {-1};
+        
+        while(parent[destNode] != destNode)        // parent array ni update cheyyadam kosam ee loop 
+        {
+            path.push_back(destNode);              // path ane vector loki destination node nundi oka path lo node 1 varuku push chestham
+            destNode = parent[destNode];           // ippudu okavela 3 destination node anuko adhi 2 nundi vachindhi anuko parent[3] = 2 kadha appudu, path loki 3 ni 
+        }                                          // push chesi next destination node ni 2 chestham ala 
+        
+        path.push_back(1);
+        path.push_back(result[n]);
+        
+        reverse(path.begin(), path.end());         
+        
+        return path;
+    }
+};
