@@ -1,0 +1,74 @@
+class Solution {
+public:
+    bool isValid(string curr)
+    {
+        int count=0;
+        for(auto &ch : curr)
+        {
+            if(ch == '(')count++;
+            else count--;
+
+            if(count<0)return false;
+        }
+        return count == 0;
+    }
+    void solve(string &curr, int n, vector<string>& ans)
+    {
+        if(curr.length() == 2*n)
+        {
+            if(isValid(curr))                // ikkada manaki string valid o kaadho chusukovali endhukante invalid vi kuda generae avthay kabatti
+            {
+                ans.push_back(curr);
+            }
+            return;
+        }
+
+        curr.push_back('(');
+        solve(curr, n, ans);
+        curr.pop_back();
+
+        curr.push_back(')');
+        solve(curr, n, ans);
+        curr.pop_back();
+    }
+    vector<string> generateParenthesis(int n) {
+        string curr = "";
+        vector<string> ans;
+
+        solve(curr, n, ans);
+
+        return ans;
+    }
+};
+
+-----------------------------------------------------------------------***-----------------------------------------------------------------------------------------
+// Approach 2
+
+class Solution {
+public:
+    void solve(string &curr, int n, vector<string>& ans, int open, int close)
+    {
+        if(curr.length() == 2*n)
+        {
+            ans.push_back(curr);
+            return;
+        }
+
+       if(open<n)                                         // ikkada open and close brackets correct ga n each ki equal ayyela conditions vesam
+       { curr.push_back('(');
+        solve(curr, n, ans, open+1, close);
+        curr.pop_back();}
+       if(close<open)                                  
+        {curr.push_back(')');
+        solve(curr, n, ans, open, close+1);
+        curr.pop_back();}
+    }
+    vector<string> generateParenthesis(int n) {
+        string curr = "";
+        vector<string> ans;
+        int open=0, close=0;
+        solve(curr, n, ans, open, close);
+
+        return ans;
+    }
+};
