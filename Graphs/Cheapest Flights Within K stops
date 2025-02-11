@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        
+        unordered_map<int, vector<pair<int, int>>> mp;
+
+        for(auto &it : flights)
+        {
+          int u =  it[0];
+        int v =  it[1] ;
+           int price = it[2] ;                                 // Ikkada manaki dijkstra's tho pani avvadhu Bfs veyyaali
+
+            mp[u].push_back({v, price});
+        }
+        
+        vector<int>result(n, INT_MAX);
+        queue<pair<int, int>>pq;
+
+        result[src]=0;
+        pq.push({0, src});
+        int stop = 0;
+        while(!pq.empty() && stop<=k)
+        {  
+            int N = pq.size();
+            while(N--)
+         {
+           int dist = pq.front().first;
+           int Node = pq.front().second;
+
+           pq.pop();
+           
+           for(auto &v : mp[Node])
+           {
+               int d = v.second;
+               int adjNode = v.first;
+               
+               if(d+dist < result[adjNode])
+               {
+                result[adjNode] = d+dist;
+                pq.push({d+dist, adjNode});
+               }
+           }
+           }
+           stop++;
+        }
+         return result[dst] == INT_MAX ? -1: result[dst];
+    }
+};
