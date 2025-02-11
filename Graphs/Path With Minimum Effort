@@ -1,0 +1,52 @@
+class Solution {
+public:
+    vector<vector<int>>directions{{0,1}, {1, 0}, {-1, 0}, {0,-1}};
+    typedef pair<int, pair<int, int>>P;
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m = heights.size();
+        int n = heights[0].size();
+
+        auto isSafe = [&](int x, int y)
+        {
+            return x>=0 && x<m && y>=0 && y<n;
+        };
+
+        vector<vector<int>>result(m, vector<int>(n, INT_MAX));
+        priority_queue<P, vector<P>, greater<P>>pq;
+
+        result[0][0]=0;
+        pq.push({0, {0,0}});
+
+        while(!pq.empty())
+        {
+            int diff = pq.top().first;
+            pair<int, int>coOrd = pq.top().second;
+            pq.pop();
+            int x = coOrd.first;
+            int y = coOrd.second;
+            
+            if(x == m-1 && y==n-1)
+            {
+                return result[m-1][n-1];
+            }
+            for(auto &dir : directions)
+            {
+                int x_ = x+dir[0];
+                int y_ = y+dir[1];
+
+                if(isSafe(x_, y_))
+                {
+                  int maxDiff = abs(heights[x][y]-heights[x_][y_]);    //manam oka path lo velthunappudu ah path loni max diff between two consecutive cell update chesthu untam 
+                  maxDiff = max(maxDiff, diff);                        // andhuke ee two lines
+
+                  if(result[x_][y_]>maxDiff)                           // ikkada result matrix lo chinna value ni update chestham
+                  {
+                    result[x_][y_] = maxDiff;
+                    pq.push({maxDiff, {x_, y_}});
+                  }
+                }
+            }
+        }
+        return result[m-1][n-1];
+    }
+};
