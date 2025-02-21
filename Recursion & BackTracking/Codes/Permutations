@@ -1,0 +1,79 @@
+
+                                                          // Distinct Integers ki 
+
+class Solution {
+public:
+    void solve(vector<vector<int>>& ans, vector<int>& temp, vector<int>& nums, unordered_map<int, int>& mp)
+    {
+        if(temp.size() == nums.size())
+        {
+            ans.push_back(temp);
+            return;
+        }
+        for(int i=0; i<nums.size(); i++)
+        {
+            if(mp.find(nums[i]) == mp.end())
+            {
+                temp.push_back(nums[i]);
+                mp[nums[i]]++;
+
+                solve(ans, temp, nums, mp);
+
+                mp.erase(nums[i]);
+                temp.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>>ans;
+        vector<int> temp;
+
+        unordered_map<int, int>mp;
+        
+        solve(ans, temp, nums, mp);
+
+        return ans;
+    }
+};
+
+-----------------------------------------------------------------------***-----------------------------------------------------------------------------------
+
+                                                             // Duplicate Characters kuda untay
+
+void solve(string &s, vector<string>& ans, string& temp, unordered_set<string>& st, unordered_map<char, int>& mp)
+    {
+        if(temp.length() == s.length())
+        {
+            if(st.find(temp) == st.end())
+            {
+                ans.push_back(temp);
+                st.insert(temp);
+                return;
+            }
+        }
+        for(int i=0; i<s.length(); i++)
+        {      
+               if(mp.find(i) == mp.end())
+               {
+               temp.push_back(s[i]);
+               mp[i]++;                                     // ikkada index store cheyyaali confirm ga as duplicate characters untay kabatti
+               solve(s, ans, temp, st, mp);
+               mp.erase(i);
+               temp.pop_back();
+               }
+        }
+    }
+    vector<string> findPermutation(string &s) {
+        // Code here there
+        
+        vector<string> ans;
+        string temp = "";
+        
+        unordered_map<char, int>mp;
+        unordered_set<string> st;
+        
+        solve(s, ans, temp, st, mp);
+        
+        return ans;
+    }
+};
